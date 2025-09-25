@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KingDown - Multi-Platform Media Downloader</title>
+    <title>KingDown - Download Videos from 9 Platforms</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
@@ -14,6 +14,7 @@
             --darker: #0f0f1a;
             --light: #f8f9fa;
             --gray: #6c757d;
+            --success: #28a745;
         }
         
         * {
@@ -33,19 +34,17 @@
         .container {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 0 20px;
+            padding: 20px;
         }
         
         header {
-            padding: 30px 0;
             text-align: center;
-            background: rgba(0, 0, 0, 0.3);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            margin-bottom: 40px;
+            padding: 30px 0;
+            margin-bottom: 30px;
         }
         
         .logo {
-            font-size: 2.8rem;
+            font-size: 3rem;
             font-weight: 800;
             margin-bottom: 10px;
             background: linear-gradient(90deg, var(--primary), var(--accent));
@@ -381,6 +380,27 @@
             text-align: center;
         }
         
+        .king-features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 40px;
+        }
+        
+        .feature {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .feature i {
+            font-size: 2.5rem;
+            color: var(--accent);
+            margin-bottom: 15px;
+        }
+        
         @media (max-width: 768px) {
             .media-info {
                 grid-template-columns: 1fr;
@@ -478,28 +498,46 @@
             </div>
         </section>
         
+        <div class="king-features">
+            <div class="feature">
+                <i class="fas fa-crown"></i>
+                <h3>King Quality</h3>
+                <p>Highest quality downloads available for all platforms</p>
+            </div>
+            <div class="feature">
+                <i class="fas fa-bolt"></i>
+                <h3>King Speed</h3>
+                <p>Fast processing and download speeds</p>
+            </div>
+            <div class="feature">
+                <i class="fas fa-shield-alt"></i>
+                <h3>King Security</h3>
+                <p>Safe and secure downloading process</p>
+            </div>
+        </div>
+        
         <section class="contact-section">
             <div class="contact-card">
-                <h3><i class="fab fa-whatsapp"></i> WhatsApp Contact</h3>
-                <p>Get in touch with us for support</p>
-                <a href="https://wa.me/1234567890" class="contact-btn" target="_blank">Contact via WhatsApp</a>
+                <h3><i class="fab fa-whatsapp"></i> King Support</h3>
+                <p>Get help from King support team</p>
+                <a href="#" class="contact-btn">Contact King Support</a>
             </div>
             
             <div class="contact-card">
-                <h3><i class="fab fa-telegram"></i> Muhammad Makki Channel</h3>
-                <p>Follow our channel for updates</p>
-                <a href="#" class="contact-btn">Join Channel</a>
+                <h3><i class="fas fa-code"></i> King API</h3>
+                <p>Access our powerful download API</p>
+                <a href="#" class="contact-btn">View API Docs</a>
             </div>
             
             <div class="contact-card">
-                <h3><i class="fas fa-rocket"></i> Ahm7Tech Channel</h3>
-                <p>Technology tips and tutorials</p>
-                <a href="#" class="contact-btn">Visit Channel</a>
+                <h3><i class="fas fa-star"></i> King Premium</h3>
+                <p>Upgrade to King Premium for more features</p>
+                <a href="#" class="contact-btn">Learn More</a>
             </div>
         </section>
         
         <footer>
-            <p>Created By Ahm7xMakki • Supporting 9 Platforms With Premium Quality</p>
+            <p>Created By King • Supporting 9 Platforms With Premium Quality</p>
             <p class="creator">YouTube • TikTok • Instagram • Facebook • Snapchat • SoundCloud • Reddit • Twitter • Douyin</p>
         </footer>
     </div>
@@ -570,27 +608,4 @@
             async function fetchMediaInfo(url) {
                 try {
                     // Using a proxy to avoid CORS issues
-                    const proxyUrl = 'https://api.allorigins.win/raw?url=';
-                    const apiUrl = `https://batgpt.vercel.app/api/alldl?url=${encodeURIComponent(url)}`;
-                    
-                    const response = await fetch(proxyUrl + encodeURIComponent(apiUrl));
-                    
-                    if (!response.ok) {
-                        throw new Error('API request failed');
-                    }
-                    
-                    const data = await response.json();
-                    
-                    // Hide loading
-                    loading.style.display = 'none';
-                    
-                    if (data.success) {
-                        // Display results
-                        displayMediaInfo(data.mediaInfo);
-                    } else {
-                        showError('Failed to fetch media information. Please check the URL and try again.');
-                    }
-                } catch (err) {
-                    console.error('Error:', err);
-                    showError('An error occurred while fetching media information. Please try again.');
-          
+                    const proxyUrl = 'https
