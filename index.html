@@ -328,26 +328,6 @@
             font-size: 0.9rem;
         }
         
-        .api-info {
-            background: rgba(255, 255, 255, 0.03);
-            border-radius: 10px;
-            padding: 20px;
-            margin-top: 30px;
-            border-left: 3px solid var(--primary);
-        }
-        
-        .api-info h4 {
-            margin-bottom: 10px;
-            color: var(--accent);
-        }
-        
-        .api-info code {
-            background: rgba(0, 0, 0, 0.3);
-            padding: 2px 6px;
-            border-radius: 4px;
-            font-family: monospace;
-        }
-        
         .loading {
             display: none;
             text-align: center;
@@ -399,6 +379,17 @@
             font-size: 2.5rem;
             color: var(--accent);
             margin-bottom: 15px;
+        }
+        
+        .success {
+            display: none;
+            background: rgba(40, 167, 69, 0.2);
+            border: 1px solid rgba(40, 167, 69, 0.5);
+            color: #d4edda;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+            text-align: center;
         }
         
         @media (max-width: 768px) {
@@ -457,7 +448,7 @@
             
             <div class="examples">
                 <div class="example" data-url="https://youtu.be/xu7VHa9Rldk">YouTube: https://youtu.be/xu7VHa9Rldk</div>
-                <div class="example" data-url="https://www.tiktok.com/@user/video/123">TikTok: https://www.tiktok.com/@user/video/123</div>
+                <div class="example" data-url="https://vm.tiktok.com/ZM6example">TikTok: https://vm.tiktok.com/ZM6example</div>
                 <div class="example" data-url="https://www.instagram.com/p/ABC123/">Instagram: https://www.instagram.com/p/ABC123/</div>
             </div>
             
@@ -468,6 +459,10 @@
             
             <div class="error" id="error">
                 <i class="fas fa-exclamation-triangle"></i> <span id="error-message">An error occurred</span>
+            </div>
+            
+            <div class="success" id="success">
+                <i class="fas fa-check-circle"></i> <span id="success-message">Media information loaded successfully!</span>
             </div>
             
             <div class="results" id="results">
@@ -489,12 +484,6 @@
                         <!-- Quality options will be dynamically added here -->
                     </div>
                 </div>
-            </div>
-            
-            <div class="api-info">
-                <h4><i class="fas fa-code"></i> API Documentation</h4>
-                <p>Endpoint: <code>GET https://batgpt.vercel.app/api/alldl</code></p>
-                <p>Parameter: <code>url</code> - Media URL (Required)</p>
             </div>
         </section>
         
@@ -520,13 +509,13 @@
             <div class="contact-card">
                 <h3><i class="fab fa-whatsapp"></i> King Support</h3>
                 <p>Get help from King support team</p>
-                <a href="#" class="contact-btn">Contact King Support</a>
+                <a href="https://wa.me/923259948281" class="contact-btn" target="_blank">Contact on WhatsApp</a>
             </div>
             
             <div class="contact-card">
-                <h3><i class="fas fa-code"></i> King API</h3>
-                <p>Access our powerful download API</p>
-                <a href="#" class="contact-btn">View API Docs</a>
+                <h3><i class="fas fa-tools"></i> King Tools</h3>
+                <p>Advanced tools for media downloading</p>
+                <a href="#" class="contact-btn">Explore Tools</a>
             </div>
             
             <div class="contact-card">
@@ -550,6 +539,8 @@
             const loading = document.getElementById('loading');
             const error = document.getElementById('error');
             const errorMessage = document.getElementById('error-message');
+            const success = document.getElementById('success');
+            const successMessage = document.getElementById('success-message');
             
             // Example URL click handlers
             document.querySelectorAll('.example').forEach(example => {
@@ -577,6 +568,7 @@
                 loading.style.display = 'block';
                 results.style.display = 'none';
                 error.style.display = 'none';
+                success.style.display = 'none';
                 
                 // Disable download button
                 downloadBtn.disabled = true;
@@ -602,10 +594,12 @@
                 error.style.display = 'block';
                 results.style.display = 'none';
                 loading.style.display = 'none';
+                success.style.display = 'none';
             }
             
-            // Function to fetch media info from API
-            async function fetchMediaInfo(url) {
-                try {
-                    // Using a proxy to avoid CORS issues
-                    const proxyUrl = 'https
+            // Function to show success message
+            function showSuccess(message) {
+                successMessage.textContent = message;
+                success.style.display = 'block';
+                error.style.display = 'none';
+              
