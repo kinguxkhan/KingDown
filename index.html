@@ -3,10 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Multi-Platform Media Downloader</title>
+    <title>KingDown - Multi-Platform Media Downloader</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* Your CSS code from previous response goes here */
+        :root {
+            --primary: #8a2be2;
+            --secondary: #4b0082;
+            --accent: #9370db;
+            --dark: #1a1a2e;
+            --darker: #0f0f1a;
+            --light: #f8f9fa;
+            --gray: #6c757d;
+        }
+        
         * {
             margin: 0;
             padding: 0;
@@ -14,18 +23,480 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
         
-        /* ... rest of your CSS ... */
+        body {
+            background: linear-gradient(135deg, var(--darker) 0%, var(--dark) 100%);
+            color: var(--light);
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        header {
+            padding: 30px 0;
+            text-align: center;
+            background: rgba(0, 0, 0, 0.3);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 40px;
+        }
+        
+        .logo {
+            font-size: 2.8rem;
+            font-weight: 800;
+            margin-bottom: 10px;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 2px 10px rgba(138, 43, 226, 0.3);
+        }
+        
+        .tagline {
+            font-size: 1.2rem;
+            color: var(--accent);
+            margin-bottom: 20px;
+        }
+        
+        .platforms {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 12px;
+            margin: 25px 0;
+        }
+        
+        .platform {
+            background: rgba(138, 43, 226, 0.2);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border: 1px solid rgba(138, 43, 226, 0.3);
+            transition: all 0.3s ease;
+        }
+        
+        .platform:hover {
+            background: rgba(138, 43, 226, 0.3);
+            transform: translateY(-2px);
+        }
+        
+        .platform i {
+            color: var(--accent);
+        }
+        
+        .download-section {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 40px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .section-title {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            color: var(--accent);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .input-group {
+            display: flex;
+            margin-bottom: 20px;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .url-input {
+            flex: 1;
+            padding: 16px 20px;
+            border: none;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            font-size: 1rem;
+            outline: none;
+        }
+        
+        .url-input::placeholder {
+            color: #a0a0c0;
+        }
+        
+        .download-btn {
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            border: none;
+            padding: 0 30px;
+            color: white;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .download-btn:hover {
+            background: linear-gradient(90deg, var(--secondary), var(--primary));
+            box-shadow: 0 5px 15px rgba(138, 43, 226, 0.4);
+        }
+        
+        .download-btn:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+        
+        .instructions {
+            text-align: center;
+            margin-top: 15px;
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+        
+        .examples {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .example {
+            background: rgba(255, 255, 255, 0.03);
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            color: var(--accent);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-left: 3px solid var(--primary);
+        }
+        
+        .example:hover {
+            background: rgba(255, 255, 255, 0.07);
+        }
+        
+        .results {
+            display: none;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 30px;
+            margin-top: 30px;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .media-info {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+        
+        .thumbnail {
+            width: 100%;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        .thumbnail img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+        
+        .media-details h3 {
+            margin-bottom: 15px;
+            font-size: 1.4rem;
+            line-height: 1.3;
+        }
+        
+        .media-details p {
+            margin-bottom: 10px;
+            color: #a0a0c0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .download-options h4 {
+            margin-bottom: 20px;
+            font-size: 1.3rem;
+            color: var(--accent);
+        }
+        
+        .quality-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+            gap: 15px;
+        }
+        
+        .quality-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            padding: 15px;
+            border-radius: 8px;
+            color: white;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .quality-btn:hover {
+            background: rgba(138, 43, 226, 0.2);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .quality-btn i {
+            font-size: 1.5rem;
+            color: var(--accent);
+        }
+        
+        .contact-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-top: 50px;
+        }
+        
+        .contact-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 25px;
+            text-align: center;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .contact-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+        
+        .contact-card h3 {
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        
+        .contact-btn {
+            display: inline-block;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            padding: 12px 25px;
+            border-radius: 30px;
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            margin-top: 15px;
+            transition: all 0.3s ease;
+        }
+        
+        .contact-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(138, 43, 226, 0.4);
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 70px;
+            padding: 30px 0;
+            color: var(--gray);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .creator {
+            margin-top: 10px;
+            font-size: 0.9rem;
+        }
+        
+        .api-info {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 30px;
+            border-left: 3px solid var(--primary);
+        }
+        
+        .api-info h4 {
+            margin-bottom: 10px;
+            color: var(--accent);
+        }
+        
+        .api-info code {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: monospace;
+        }
+        
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 20px;
+        }
+        
+        .spinner {
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top: 4px solid var(--accent);
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 15px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .error {
+            display: none;
+            background: rgba(220, 53, 69, 0.2);
+            border: 1px solid rgba(220, 53, 69, 0.5);
+            color: #f8d7da;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+            text-align: center;
+        }
+        
+        @media (max-width: 768px) {
+            .media-info {
+                grid-template-columns: 1fr;
+            }
+            
+            .input-group {
+                flex-direction: column;
+            }
+            
+            .url-input {
+                border-radius: 10px 10px 0 0;
+            }
+            
+            .download-btn {
+                border-radius: 0 0 10px 10px;
+                padding: 15px;
+                justify-content: center;
+            }
+            
+            .logo {
+                font-size: 2.2rem;
+            }
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <!-- Your HTML structure from previous response -->
         <header>
-            <h1 class="logo">Media Downloader</h1>
-            <!-- ... rest of your HTML ... -->
+            <h1 class="logo">KingDown</h1>
+            <p class="tagline">Download Videos And Audio From 9 Platforms With High Quality</p>
+            
+            <div class="platforms">
+                <div class="platform"><i class="fab fa-youtube"></i> YouTube</div>
+                <div class="platform"><i class="fab fa-tiktok"></i> TikTok</div>
+                <div class="platform"><i class="fab fa-instagram"></i> Instagram</div>
+                <div class="platform"><i class="fab fa-facebook"></i> Facebook</div>
+                <div class="platform"><i class="fab fa-snapchat"></i> Snapchat</div>
+                <div class="platform"><i class="fab fa-soundcloud"></i> SoundCloud</div>
+                <div class="platform"><i class="fab fa-reddit"></i> Reddit</div>
+                <div class="platform"><i class="fab fa-twitter"></i> Twitter</div>
+                <div class="platform"><i class="fas fa-video"></i> Douyin</div>
+            </div>
         </header>
         
-        <!-- ... more HTML content ... -->
+        <section class="download-section">
+            <h2 class="section-title"><i class="fas fa-download"></i> Paste Your Media URL Here</h2>
+            <div class="input-group">
+                <input type="text" class="url-input" placeholder="https://youtube.com/watch?v=..." id="url-input">
+                <button class="download-btn" id="download-btn">
+                    <i class="fas fa-download"></i> Download
+                </button>
+            </div>
+            <p class="instructions">Example: https://youtu.be/xu7VHa9Rldk</p>
+            
+            <div class="examples">
+                <div class="example" data-url="https://youtu.be/xu7VHa9Rldk">YouTube: https://youtu.be/xu7VHa9Rldk</div>
+                <div class="example" data-url="https://www.tiktok.com/@user/video/123">TikTok: https://www.tiktok.com/@user/video/123</div>
+                <div class="example" data-url="https://www.instagram.com/p/ABC123/">Instagram: https://www.instagram.com/p/ABC123/</div>
+            </div>
+            
+            <div class="loading" id="loading">
+                <div class="spinner"></div>
+                <p>Processing your request...</p>
+            </div>
+            
+            <div class="error" id="error">
+                <i class="fas fa-exclamation-triangle"></i> <span id="error-message">An error occurred</span>
+            </div>
+            
+            <div class="results" id="results">
+                <div class="media-info">
+                    <div class="thumbnail">
+                        <img src="https://via.placeholder.com/300x200/1a1a2e/a0a0c0?text=Thumbnail" alt="Media thumbnail" id="thumbnail">
+                    </div>
+                    <div class="media-details">
+                        <h3 id="media-title">Media Title</h3>
+                        <p id="media-author"><i class="fas fa-user"></i> By Author Name</p>
+                        <p id="media-duration"><i class="fas fa-clock"></i> Duration: 3:45</p>
+                        <p id="media-platform"><i class="fas fa-globe"></i> Platform: YouTube</p>
+                    </div>
+                </div>
+                
+                <div class="download-options">
+                    <h4><i class="fas fa-download"></i> Download Options</h4>
+                    <div class="quality-options" id="quality-options">
+                        <!-- Quality options will be dynamically added here -->
+                    </div>
+                </div>
+            </div>
+            
+            <div class="api-info">
+                <h4><i class="fas fa-code"></i> API Documentation</h4>
+                <p>Endpoint: <code>GET https://batgpt.vercel.app/api/alldl</code></p>
+                <p>Parameter: <code>url</code> - Media URL (Required)</p>
+            </div>
+        </section>
+        
+        <section class="contact-section">
+            <div class="contact-card">
+                <h3><i class="fab fa-whatsapp"></i> WhatsApp Contact</h3>
+                <p>Get in touch with us for support</p>
+                <a href="https://wa.me/1234567890" class="contact-btn" target="_blank">Contact via WhatsApp</a>
+            </div>
+            
+            <div class="contact-card">
+                <h3><i class="fab fa-telegram"></i> Muhammad Makki Channel</h3>
+                <p>Follow our channel for updates</p>
+                <a href="#" class="contact-btn">Join Channel</a>
+            </div>
+            
+            <div class="contact-card">
+                <h3><i class="fas fa-rocket"></i> Ahm7Tech Channel</h3>
+                <p>Technology tips and tutorials</p>
+                <a href="#" class="contact-btn">Visit Channel</a>
+            </div>
+        </section>
         
         <footer>
             <p>Created By Ahm7xMakki • Supporting 9 Platforms With Premium Quality</p>
@@ -34,10 +505,92 @@
     </div>
 
     <script>
-        // Your JavaScript code from previous response
-        document.getElementById('download-btn').addEventListener('click', function() {
-            // ... your JavaScript functionality ...
-        });
-    </script>
-</body>
-</html>
+        document.addEventListener('DOMContentLoaded', function() {
+            const urlInput = document.getElementById('url-input');
+            const downloadBtn = document.getElementById('download-btn');
+            const results = document.getElementById('results');
+            const loading = document.getElementById('loading');
+            const error = document.getElementById('error');
+            const errorMessage = document.getElementById('error-message');
+            
+            // Example URL click handlers
+            document.querySelectorAll('.example').forEach(example => {
+                example.addEventListener('click', function() {
+                    urlInput.value = this.getAttribute('data-url');
+                });
+            });
+            
+            // Download button click handler
+            downloadBtn.addEventListener('click', function() {
+                const url = urlInput.value.trim();
+                
+                if (!url) {
+                    showError('Please enter a valid URL');
+                    return;
+                }
+                
+                // Validate URL format
+                if (!isValidUrl(url)) {
+                    showError('Please enter a valid URL starting with http:// or https://');
+                    return;
+                }
+                
+                // Show loading, hide results and error
+                loading.style.display = 'block';
+                results.style.display = 'none';
+                error.style.display = 'none';
+                
+                // Disable download button
+                downloadBtn.disabled = true;
+                downloadBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+                
+                // Call the API
+                fetchMediaInfo(url);
+            });
+            
+            // Function to validate URL
+            function isValidUrl(string) {
+                try {
+                    new URL(string);
+                    return true;
+                } catch (_) {
+                    return false;
+                }
+            }
+            
+            // Function to show error message
+            function showError(message) {
+                errorMessage.textContent = message;
+                error.style.display = 'block';
+                results.style.display = 'none';
+                loading.style.display = 'none';
+            }
+            
+            // Function to fetch media info from API
+            async function fetchMediaInfo(url) {
+                try {
+                    // Using a proxy to avoid CORS issues
+                    const proxyUrl = 'https://api.allorigins.win/raw?url=';
+                    const apiUrl = `https://batgpt.vercel.app/api/alldl?url=${encodeURIComponent(url)}`;
+                    
+                    const response = await fetch(proxyUrl + encodeURIComponent(apiUrl));
+                    
+                    if (!response.ok) {
+                        throw new Error('API request failed');
+                    }
+                    
+                    const data = await response.json();
+                    
+                    // Hide loading
+                    loading.style.display = 'none';
+                    
+                    if (data.success) {
+                        // Display results
+                        displayMediaInfo(data.mediaInfo);
+                    } else {
+                        showError('Failed to fetch media information. Please check the URL and try again.');
+                    }
+                } catch (err) {
+                    console.error('Error:', err);
+                    showError('An error occurred while fetching media information. Please try again.');
+          
